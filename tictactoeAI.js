@@ -17,7 +17,7 @@ function boardController($scope) {
     $scope.score = $scope.boardLength + 1;
     $scope.scores = [];
     $scope.moves = [];
-    $score.bestMove = 0;
+    $scope.bestMove = 0;
 
     $scope.player = "x";
     $scope.hPlayer = "x";
