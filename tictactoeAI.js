@@ -14,6 +14,10 @@ function boardController($scope) {
     $scope.wins = [];
     $scope.range = [];
     $scope.range1 = [];
+    $scope.score = $scope.boardLength + 1;
+    $scope.scores = [];
+    $scope.moves = [];
+    $score.bestMove = 0;
 
     $scope.player = "x";
     $scope.hPlayer = "x";
@@ -121,20 +125,69 @@ function boardController($scope) {
   }
 
 
-  getScore = function($scope, brd, depth, player) {
+  minMaxAI = function($scope, brd, depth, player) {
 
     var opponent = player == $scope.hPlayer ? $scope.hPlayer : $scope.cPlayer;
 
-    var score = $scope.boardLength + 1;
-
-
     if (checkWin($scope, brd, player))
-      return score - depth;
+      return $scope.score - depth;
     else if (checkWin($scope, brd, opponent))
-      return depth - score;
+      return depth - $scope.score;
     else if (checkFull($scope, brd)) {
-      return 0
+      return 0;
     }
+
+    for (i = 0; i < $scope.boardLength; i++) {
+
+      if (brd[i] !== $scope.hPlayer && brd[i] !== $scope.cPlayer) {
+
+        newboard = brd.splice();
+        newboard[i] = opponent;
+        score = minMaxAI($scope, newboard, depth + 1, opponent);
+        $scope.moves.push(i);
+        $scope.scores.push(score);
+
+      }
+
+    }
+
+
+    if ($scope.player === player) {
+
+      maxScore = -10000;
+
+      for (i = 0; i < $scope.scores.length; i++) {
+        if ($scope.scores[i] > maxScore)
+          maxScore = $scope.scores[i]
+      }
+
+      for (i = 0; i < $scope.scores.length; i++) {
+        if ($scope.scores[i] == maxScore) {
+          $score.bestMove = $scope.moves[i]
+          return  maxScore;
+        }
+
+      }
+
+    }
+    else {
+      minScore = 10000;
+      
+      for (i = 0; i < $scope.scores.length; i++) {
+        if ($scope.scores[i] < minScore)
+          minScore = $scope.scores[i]
+      }
+
+      for (i = 0; i < $scope.scores.length; i++) {
+        if ($scope.scores[i] == minScore) {
+          $score.bestMove = $scope.moves[i]
+         return  minScore;
+          
+        }
+      }
+
+    }
+
 
   }
 
