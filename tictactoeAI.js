@@ -83,14 +83,14 @@ function boardController($scope) {
 
   }
 
-  checkWin = function($scope) {
+  checkWin = function($scope, brd, player) {
 
 
     for (i = 0; i < $scope.maxWins; i++) {
       winFlag = false;
       for (j = 0; j < $scope.boardSize; j++) {
 
-        if ($scope.board[wins[i][j]] == $scope.player) {
+        if (brd[wins[i][j]] == player) {
           winFlag = true;
         } else {
           winFlag = false;
@@ -105,6 +105,36 @@ function boardController($scope) {
 
     }
 
+  }
+
+
+  checkFull = function($scope, brd) {
+
+    for (i = 0; i < $scope.boardLenght; i++) {
+      if (brd[i] == $scope.hPlayer || brd[i] == $scope.cPlayer)
+        return true
+
+    }
+
+    return false;
+
+  }
+
+
+  getScore = function($scope, brd, depth, player) {
+
+    var opponent = player == $scope.hPlayer ? $scope.hPlayer : $scope.cPlayer;
+
+    var score = $scope.boardLength + 1;
+
+
+    if (checkWin($scope, brd, player))
+      return score - depth;
+    else if (checkWin($scope, brd, opponent))
+      return depth - score;
+    else if (checkFull($scope, brd)) {
+      return 0
+    }
 
   }
 
