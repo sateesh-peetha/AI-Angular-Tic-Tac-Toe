@@ -12,17 +12,24 @@ function boardController($scope) {
 
     $scope.board = [];
     $scope.wins = [];
+    $scope.range = [];
+    $scope.range1 = [];
 
     $scope.player = "x";
     $scope.hPlayer = "x";
     $scope.cPlayer = "c";
 
-    callback($scope);
 
     for (i = 0; i < $scope.boardLength; i++) {
       $scope.board[i] = i;
     }
-
+    k = 0;
+    for (i = 0; i < $scope.boardSize; i++) {
+      $scope.range[i] = i;
+      $scope.range1[i] = k;
+      k = k + $scope.boardSize;
+    }
+    //
     i = 0
 
     for (j = 0; j < $scope.boardLength; j = j + $scope.boardSize) {
@@ -71,6 +78,34 @@ function boardController($scope) {
 
     $scope.wins[i] = win;
 
+    callback($scope);
+
+
+  }
+
+  checkWin = function($scope) {
+
+
+    for (i = 0; i < $scope.maxWins; i++) {
+      winFlag = false;
+      for (j = 0; j < $scope.boardSize; j++) {
+
+        if ($scope.board[wins[i][j]] == $scope.player) {
+          winFlag = true;
+        } else {
+          winFlag = false;
+        }
+
+      }
+
+      if (winFlag)
+        return true;
+      else
+        return false;
+
+    }
+
+
   }
 
   //init board
@@ -80,9 +115,8 @@ function boardController($scope) {
     //  console.log($scope.wins)
     //  console.log($scope.board)
 
+
   })
-
-
 
 }
 
