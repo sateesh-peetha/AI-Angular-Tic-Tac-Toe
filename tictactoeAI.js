@@ -12,8 +12,7 @@ function boardController($scope) {
 
     $scope.board = [];
     $scope.wins = [];
-    $scope.range = [];
-    $scope.range1 = [];
+    $scope.rows = [];
     $scope.score = $scope.boardLength + 1;
     $scope.scores = [];
     $scope.moves = [];
@@ -25,13 +24,10 @@ function boardController($scope) {
 
 
     for (i = 0; i < $scope.boardLength; i++) {
-      $scope.board[i] = i;
+      $scope.board[i] = " ";
     }
-    k = 0;
     for (i = 0; i < $scope.boardSize; i++) {
-      $scope.range[i] = i;
-      $scope.range1[i] = k;
-      k = k + $scope.boardSize;
+      $scope.rows[i] = i;
     }
     //
     i = 0
@@ -94,7 +90,7 @@ function boardController($scope) {
       winFlag = false;
       for (j = 0; j < $scope.boardSize; j++) {
 
-        if (brd[wins[i][j]] == player) {
+        if (brd[wins[i][j]] === player) {
           winFlag = true;
         } else {
           winFlag = false;
@@ -115,12 +111,12 @@ function boardController($scope) {
   checkFull = function($scope, brd) {
 
     for (i = 0; i < $scope.boardLenght; i++) {
-      if (brd[i] == $scope.hPlayer || brd[i] == $scope.cPlayer)
-        return true
+      if (brd[i] === " ")
+        return false
 
     }
 
-    return false;
+    return true;
 
   }
 
@@ -139,7 +135,7 @@ function boardController($scope) {
 
     for (i = 0; i < $scope.boardLength; i++) {
 
-      if (brd[i] !== $scope.hPlayer && brd[i] !== $scope.cPlayer) {
+      if (brd[i] === " ") {
 
         newboard = brd.splice();
         newboard[i] = opponent;
@@ -163,16 +159,20 @@ function boardController($scope) {
 
       for (i = 0; i < $scope.scores.length; i++) {
         if ($scope.scores[i] == maxScore) {
-          $score.bestMove = $scope.moves[i]
-          return  maxScore;
+          $score.bestMove = $scope.moves[i];
+
+          if (depth === 0)
+            $scope.board[$score.bestMove] = player;
+
+          return maxScore;
         }
 
       }
 
-    }
-    else {
+
+    } else {
       minScore = 10000;
-      
+
       for (i = 0; i < $scope.scores.length; i++) {
         if ($scope.scores[i] < minScore)
           minScore = $scope.scores[i]
@@ -181,8 +181,8 @@ function boardController($scope) {
       for (i = 0; i < $scope.scores.length; i++) {
         if ($scope.scores[i] == minScore) {
           $score.bestMove = $scope.moves[i]
-         return  minScore;
-          
+          return minScore;
+
         }
       }
 
@@ -199,7 +199,10 @@ function boardController($scope) {
     //  console.log($scope.board)
 
 
-  })
+  });
+
+
+
 
 }
 
