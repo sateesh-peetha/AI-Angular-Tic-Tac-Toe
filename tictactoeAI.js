@@ -11,12 +11,15 @@ function boardController($scope) {
     $scope.maxWins = $scope.boardSize + $scope.boardSize + 2;
 
     $scope.board = [];
+    $scope.bClass = [];
+    $scope.state = [];
     $scope.wins = [];
     $scope.rows = [];
     $scope.score = $scope.boardLength + 1;
     $scope.scores = [];
     $scope.moves = [];
     $scope.bestMove = 0;
+    $scope.gamestart = false;
 
     $scope.player = "x";
     $scope.hPlayer = "x";
@@ -25,6 +28,8 @@ function boardController($scope) {
 
     for (i = 0; i < $scope.boardLength; i++) {
       $scope.board[i] = " ";
+      $scope.bClass[i] = "board disable";
+      $scope.state[i] = true;
     }
     for (i = 0; i < $scope.boardSize; i++) {
       $scope.rows[i] = i;
@@ -90,7 +95,7 @@ function boardController($scope) {
       winFlag = false;
       for (j = 0; j < $scope.boardSize; j++) {
 
-        if (brd[wins[i][j]] === player) {
+        if (brd[$scope.wins[i][j]] === player) {
           winFlag = true;
         } else {
           winFlag = false;
@@ -122,6 +127,8 @@ function boardController($scope) {
 
 
   minMaxAI = function($scope, brd, depth, player) {
+    
+   // console.log(brd);
 
     var opponent = player == $scope.hPlayer ? $scope.hPlayer : $scope.cPlayer;
 
@@ -137,9 +144,10 @@ function boardController($scope) {
 
       if (brd[i] === " ") {
 
-        newboard = brd.splice();
+        newboard = brd.slice();
         newboard[i] = opponent;
         score = minMaxAI($scope, newboard, depth + 1, opponent);
+        console.log(score,i);
         $scope.moves.push(i);
         $scope.scores.push(score);
 
@@ -161,8 +169,17 @@ function boardController($scope) {
         if ($scope.scores[i] == maxScore) {
           $score.bestMove = $scope.moves[i];
 
-          if (depth === 0)
+          if (depth === 0) {
             $scope.board[$score.bestMove] = player;
+            $scope.player  = hPlayer;
+            
+            for (j=0;j<$scope.boardLength;j++) {
+              if ($scope.board[j] === " " )
+               $scope.state = false;
+              
+            }
+            
+          }
 
           return maxScore;
         }
@@ -191,6 +208,17 @@ function boardController($scope) {
 
   }
 
+
+  $scope.startGame = function() {
+
+    for (i = 0; i < $scope.boardLength; i++) {
+
+      $scope.state[i] = false;
+
+    }
+
+  }
+
   //init board
 
   init($scope, 3, function($scope) {
@@ -198,11 +226,26 @@ function boardController($scope) {
     //  console.log($scope.wins)
     //  console.log($scope.board)
 
-
   });
+  
+  $scope.playGame = function() {
 
+   console.log("came to playgame function");
+    $scope.player = $scope.cPlayer;
+    var player = $scope.player ;
+    
+     for (i = 0; i < $scope.boardLength; i++) {
 
+      $scope.state[i] = true;
 
+    }
+    
+    brd = $scope.board.slice();
+    console.log(brd);
+    score = minMaxAI($scope,brd, 0, player);
+    
+    
+  }
 
 }
 
