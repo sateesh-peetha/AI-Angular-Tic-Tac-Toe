@@ -115,9 +115,12 @@ function boardController($scope) {
 
   checkFull = function($scope, brd) {
 
-    for (i = 0; i < $scope.boardLenght; i++) {
-      if (brd[i] === " ")
-        return false
+    for (i = 0; i < $scope.boardLength; i++) {
+      if (brd[i] === " ") { 
+        cosnole.log('in checkfull function')
+        return false;
+        
+      }
 
     }
 
@@ -128,7 +131,7 @@ function boardController($scope) {
 
   minMaxAI = function($scope, brd, depth, player) {
     
-   // console.log(brd);
+    console.log(brd,depth,player);
 
     var opponent = player == $scope.hPlayer ? $scope.hPlayer : $scope.cPlayer;
 
@@ -141,9 +144,10 @@ function boardController($scope) {
     }
 
     for (i = 0; i < $scope.boardLength; i++) {
-
+      console.log("came here");
+      
       if (brd[i] === " ") {
-
+      console.log("inside if");
         newboard = brd.slice();
         newboard[i] = opponent;
         score = minMaxAI($scope, newboard, depth + 1, opponent);
@@ -243,6 +247,7 @@ function boardController($scope) {
     brd = $scope.board.slice();
     console.log(brd);
     score = minMaxAI($scope,brd, 0, player);
+    console.log(score);
     
     
   }
