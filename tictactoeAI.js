@@ -2,7 +2,8 @@ var app = angular.module('tictactoe', []);
 
 function boardController($scope) {
 
-
+ $scope.defaultSize = 3;
+  
   init = function($scope, boardSize, callback) {
 
     $scope.boardSize = boardSize;
@@ -20,15 +21,19 @@ function boardController($scope) {
     $scope.moves = [];
     $scope.bestMove = 0;
     $scope.gamestart = false;
+	$scope.endMessage = "";
+	$scope.beststart = [[4],[5,6,9,10],[12,6,8,16,18,0,4,24,20]]
+	
 
     $scope.player = "x";
     $scope.hPlayer = "x";
     $scope.cPlayer = "c";
+	$scope.empty   = "E";
 
 
     for (i = 0; i < $scope.boardLength; i++) {
-      $scope.board[i] = " ";
-      $scope.bClass[i] = "board disable";
+      $scope.board[i] = $scope.empty;
+      $scope.bClass[i] = "board";
       $scope.state[i] = true;
     }
     for (i = 0; i < $scope.boardSize; i++) {
@@ -88,172 +93,299 @@ function boardController($scope) {
 
   }
 
-  checkWin = function($scope, brd, player) {
-
-
-    for (i = 0; i < $scope.maxWins; i++) {
-      winFlag = false;
+  checkWin = function(brd, player) {
+	  //console.log(brd);
+	  //console.log($scope.maxWins);
+	  var i=0;
+	for (i = 0; i < $scope.maxWins; i++) {
+       var winCount = 0;
+	  
       for (j = 0; j < $scope.boardSize; j++) {
-
+		//  console.log(i,j,$scope.wins[i],player)
         if (brd[$scope.wins[i][j]] === player) {
-          winFlag = true;
-        } else {
-          winFlag = false;
-        }
-
+          winCount++;
+		  //console.log(winCount);
+        } 
+        
       }
-
-      if (winFlag)
-        return true;
-      else
-        return false;
+ 
+      if ( winCount === $scope.boardSize)
+	  {
+		  return true;
+	  }
+      
 
     }
 
+	return false;
+
   }
+  
+  winCounter = function(brd,player) {
+	  
+	var i=0;
+	
+	
+	
+	for (i = 0; i < $scope.maxWins; i++) {
+       var winCount = 0;
+	   var j=0;  
+      for (j = 0; j < $scope.boardSize; j++) {
+		  //console.log(i,j,$scope.wins[i],player,$scope.wins[i][j])
+        if (brd[$scope.wins[i][j]] === player) {
+          winCount++;
+		  
+		  if ( winCount == ($scope.boardSize -1) ) {
+			  var k=0;
+			  for(k=0;k<$scope.boardSize;k++)
+				  if (brd[$scope.wins[i][k]] === $scope.empty)
+			       return $scope.wins[i][k];
+	      }
+		  
+		  //console.log(winCount);
+        } 
+        
+      }
+  	
+	  
+	
+  }
+  
+  return -1;
+  
+
+}
 
 
-  checkFull = function($scope, brd) {
+  checkFull = function(brd) {
 
+	var i = 0;
     for (i = 0; i < $scope.boardLength; i++) {
-      if (brd[i] === " ") { 
-        cosnole.log('in checkfull function')
+      if (brd[i] === $scope.empty) { 
+        //cosnole.log('in checkfull function')
         return false;
         
       }
 
     }
-
+	//console.log('board full');
     return true;
 
   }
+  
+  endGame = function() {
+  	
+	 $scope.gamestart = true;
+	 
+     for (j=0;j<$scope.boardLength;j++) {
+       if ($scope.board[j] === $scope.empty )
+           $scope.state[j] = true;
+        
+     }
+   	
+  }
 
 
-  minMaxAI = function($scope, brd, depth, player) {
+  minMaxAI = function(brd, depth, player) {
     
-    console.log(brd,depth,player);
-
-    var opponent = player == $scope.hPlayer ? $scope.hPlayer : $scope.cPlayer;
-
-    if (checkWin($scope, brd, player))
-      return $scope.score - depth;
-    else if (checkWin($scope, brd, opponent))
-      return depth - $scope.score;
-    else if (checkFull($scope, brd)) {
+   var max  = -25000;
+   var score = 0;
+   
+ 
+   
+   if ( player === $scope.hPlayer)
+	  var opponent = $scope.cPlayer
+   else
+      var opponent = $scope.hPlayer;	   
+ 
+     if (checkWin(brd, opponent))
+      return  - $scope.score + depth;
+     if (checkFull(brd)) {
       return 0;
-    }
+     }
+    
+	var bestMove = 0;
+	var score    = 0;
+	
+	var i = 0;
+    var limit = 0;
+	
+	var start = 0;
+	var end = $scope.boardLength;
+	
+	var j=0;
+	var temparr = $scope.beststart[$scope.defaultSize-3];
+	//console.log($scope.board);
+	
+	
+	for (j=0;j<temparr.length ;j++)
+	{
+		
+		if ( $scope.board[temparr[j]] === $scope.empty)
+	{
+		
+		 
+		var pos = winCounter($scope.board,$scope.hPlayer);
+		
+		//console.log(pos);
+		
+		if (  pos != -1 ){
+			
+			var intmove = pos;
+		}
+		else {
+		//console.log("in the if loop",temparr);
+		    var intmove = temparr[j];
+	    }
+		//console.log(intmove);
+        $scope.board[intmove] = player;
+  	    $scope.bClass[intmove] =  $scope.bClass[bestMove] + ' computer';
+  	  //($scope.state)
+  	    $scope.state[intmove] = true;
+  	  //console.log($scope.state)
+        $scope.player  = $scope.hPlayer;
+		var k=0
+        for (k=0;k<$scope.boardLength;k++) {
+          if ($scope.board[k] === $scope.empty )
+              $scope.state[k] = false;
+         
+        }
+		
+		return;
+	}
+}
+	
+	
+	for (i = start; i < end; i++) {
+   	  
+      if (brd[i] === $scope.empty) {
+        //console.log("inside if", i,brd, "board length" , $scope.boardLength);
+        var newboard = brd.slice();
+        newboard[i] = player;
+		
+		
+	    score = -(minMaxAI(newboard, depth + 1, opponent));
+	
+		if ( score > max ) {
+			max = score;
+			bestMove = i;
+		}
 
-    for (i = 0; i < $scope.boardLength; i++) {
-      console.log("came here");
+      }
+	  limit ++;
+    }
+	
+	
+    if (depth === 0) {
+
+      $scope.board[bestMove] = player;
+	  $scope.bClass[bestMove] =  $scope.bClass[bestMove] + ' computer';
+	  //($scope.state)
+	  $scope.state[bestMove] = true;
+	  //console.log($scope.state)
+      $scope.player  = $scope.hPlayer;
       
-      if (brd[i] === " ") {
-      console.log("inside if");
-        newboard = brd.slice();
-        newboard[i] = opponent;
-        score = minMaxAI($scope, newboard, depth + 1, opponent);
-        console.log(score,i);
-        $scope.moves.push(i);
-        $scope.scores.push(score);
-
+	  
+	  
+	  var fbrd  = $scope.board.slice();
+	  //console.log(fbrd);
+	  if (checkWin(fbrd, player)) {
+		  $scope.endMessage = "You lost the game! Try again.";
+	    	
+		  endGame();
+		  return;
+	  }
+	  
+	  if (checkWin(fbrd, opponent)) {
+		  $scope.endMessage = "You won the game.";
+		  endGame();
+		  return;
+	  }
+	  
+	  if (checkFull(fbrd)) {
+		  //console.log('came to draw')
+		  
+		  $scope.endMessage = "Game Draw!";
+		  endGame();
+		  return;
+	  }
+	     
+      for (j=0;j<$scope.boardLength;j++) {
+        if ($scope.board[j] === $scope.empty )
+            $scope.state[j] = false;
+         
       }
-
     }
-
-
-    if ($scope.player === player) {
-
-      maxScore = -10000;
-
-      for (i = 0; i < $scope.scores.length; i++) {
-        if ($scope.scores[i] > maxScore)
-          maxScore = $scope.scores[i]
-      }
-
-      for (i = 0; i < $scope.scores.length; i++) {
-        if ($scope.scores[i] == maxScore) {
-          $score.bestMove = $scope.moves[i];
-
-          if (depth === 0) {
-            $scope.board[$score.bestMove] = player;
-            $scope.player  = hPlayer;
-            
-            for (j=0;j<$scope.boardLength;j++) {
-              if ($scope.board[j] === " " )
-               $scope.state = false;
-              
-            }
-            
-          }
-
-          return maxScore;
-        }
-
-      }
-
-
-    } else {
-      minScore = 10000;
-
-      for (i = 0; i < $scope.scores.length; i++) {
-        if ($scope.scores[i] < minScore)
-          minScore = $scope.scores[i]
-      }
-
-      for (i = 0; i < $scope.scores.length; i++) {
-        if ($scope.scores[i] == minScore) {
-          $score.bestMove = $scope.moves[i]
-          return minScore;
-
-        }
-      }
-
-    }
-
+  
+  return max;
 
   }
 
 
   $scope.startGame = function() {
 
+	  var i =0;
     for (i = 0; i < $scope.boardLength; i++) {
 
-      $scope.state[i] = false;
+		if($scope.board[i] === $scope.empty)
+          $scope.state[i] = false;
 
     }
+	//console.log($scope.state)
 
   }
 
-  //init board
+  
+  init($scope, $scope.defaultSize, function($scope) {
+  
 
-  init($scope, 3, function($scope) {
-    // console.log("log  ")
-    //  console.log($scope.wins)
-    //  console.log($scope.board)
 
   });
   
+  $scope.restartGame = function() {
+  	
+	  init($scope, $scope.defaultSize , function($scope) {
+  
+
+
+	  });
+	
+	
+  }
+  
   $scope.playGame = function() {
 
-   console.log("came to playgame function");
     $scope.player = $scope.cPlayer;
     var player = $scope.player ;
-    
-     for (i = 0; i < $scope.boardLength; i++) {
-
+	
+	var i=0;
+    for (i = 0; i < $scope.boardLength; i++) {
       $scope.state[i] = true;
-
     }
+	//($scope.state);
     
     brd = $scope.board.slice();
-    console.log(brd);
-    score = minMaxAI($scope,brd, 0, player);
-    console.log(score);
-    
+   // console.log(brd);
+   
+  if (checkFull(brd)) {
+	  //console.log('came to draw')
+	  $scope.endMessage = "Game Draw!";
+	  endGame();
+	  return;
+  }
+  else if (checkWin(brd, $scope.hPlayer)) {
+		  $scope.endMessage = "You won the game.";
+		  endGame();
+		  return;
+	  }
+  else {
+    score = minMaxAI(brd, 0, player);
+   // console.log(score);
+  }  
     
   }
 
 }
-
 
 app.component('board', {
 
