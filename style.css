@@ -1,1 +1,35 @@
 
+.board {
+  margin : 2px 2px;
+  padding : 2px 2px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  background : #fffffd;
+  color: #fffffd;
+  font-size : 36px;
+  width : 80px;
+  height: 80px;
+  
+}
+
+.board:hover {
+    box-shadow: 0 8px 26px 0 rgba(0,0,0,0.2);
+}
+
+.toolbar {
+    margin : 2px 2px;
+    padding : 4px 10px;
+    background : #fffffd;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+	font-size : 14px;
+	
+}
+.computer {
+	color : blue;
+}
+.human {
+	color : red;
+}
+.boardSize {
+	background : #fffffd;
+	font-size:18px;
+}
