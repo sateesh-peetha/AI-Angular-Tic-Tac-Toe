@@ -18,7 +18,7 @@ Checkout the livedemo here : https://sateeshpeetha.github.io/Tic-Tac-Toe-/
 </img>
 
 
-<img src="https://sateeshpeetha.github.io/Tic-Tac-Toe-/tictactoeimage3.jpg">
+<img src="https://sateeshpeetha.github.io/Tic-Tac-Toe-/tictactoeimage2.jpg">
 </img>
 
 
