@@ -27,3 +27,4 @@ Checkout the livedemo here : https://sateeshpeetha.github.io/Tic-Tac-Toe-/
 </img>
 
 
+##### New learning while working on this app. Intially there was a problem with app and executing infinite loop. Battery is draining very fast When the CPU utilization is close to 100%. Imagine a popular app used by millions delivered an enhancement and performance bug. It could easily drain batteries of all the users there by increasing energy consuption to recharge. Fast and efficient execution saves energy apart from user satisfication.
