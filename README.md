@@ -14,3 +14,11 @@ Checkout the livedemo here : https://sateeshpeetha.github.io/Tic-Tac-Toe-/
 
 #### Algorithm screen shots
 
+<img src="https://sateeshpeetha.github.io/Tic-Tac-Toe-/tictactoeimage1.jpg">
+</img>
+
+
+<img src="https://sateeshpeetha.github.io/Tic-Tac-Toe-/tictactoeimage3.jpg">
+</img>
+
+
