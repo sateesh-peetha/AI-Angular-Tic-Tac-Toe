@@ -22,7 +22,7 @@ function boardController($scope) {
     $scope.bestMove = 0;
     $scope.gamestart = false;
 	$scope.endMessage = "";
-	$scope.beststart = [[4],[5,6,9,10],[12,6,8,16,18,0,4,24,20]]
+	$scope.beststart = [[4],[5,6,9,10,0,4,15],[12,6,7,8,16,17,18,0,4,24,20]];
 	
 
     $scope.player = "x";
