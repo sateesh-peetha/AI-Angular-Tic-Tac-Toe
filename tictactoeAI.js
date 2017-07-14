@@ -225,8 +225,11 @@ function boardController($scope) {
 
       if ($scope.board[temparr[j]] === $scope.empty) {
 
-
-        var pos = winCounter($scope.board, $scope.hPlayer);
+        var pos;
+        
+        pos = winCounter($scope.board, $scope.cPlayer);
+        if ( pos === -1)
+        pos = winCounter($scope.board, $scope.hPlayer);
 
         //console.log(pos);
         var intmove;
