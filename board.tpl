@@ -1,5 +1,4 @@
-
-  <br>
+  <h3 align="center"> Choose Board </h3> 
   <div align="center">
   <button ng-click="defaultSize=3;restartGame()" class="boardSize"> 3x3</button>
 	  <button ng-click="defaultSize=4;restartGame()" class="boardSize">4x4</button>
