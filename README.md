@@ -14,6 +14,8 @@ Checkout the livedemo here : https://sateeshpeetha.github.io/Tic-Tac-Toe-/
 
 #### Algorithm screen shots
 
+<img src="https://sateeshpeetha.github.io/Tic-Tac-Toe-/Slide1.jpg">
+</img>
 
 #### App sample screenshots
 
